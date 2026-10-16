@@ -10,13 +10,14 @@ export function generateScramble(length = 20, rand: () => number = Math.random):
   let lastFace = "";
   while (moves.length < length) {
     const axis = Math.floor(rand() * 3);
-    const face = AXES[axis][Math.floor(rand() * 2)];
+    const pair = AXES[axis]!;
+    const face = pair[Math.floor(rand() * 2)]!;
     if (face === lastFace) continue;
     if (axis === lastAxis && moves.length > 1) {
-      const prev2 = moves[moves.length - 2][0];
-      if (AXES[axis].includes(prev2)) continue;
+      const prev2 = moves[moves.length - 2]![0]!;
+      if (pair.includes(prev2)) continue;
     }
-    moves.push(face + SUFFIX[Math.floor(rand() * 3)]);
+    moves.push(face + SUFFIX[Math.floor(rand() * 3)]!);
     lastAxis = axis;
     lastFace = face;
   }
