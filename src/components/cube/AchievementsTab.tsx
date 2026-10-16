@@ -7,7 +7,8 @@ import { FaceGrid } from "./CubeLogo";
 function newQuestion() {
   const answer = QUIZ_CASES[Math.floor(Math.random() * QUIZ_CASES.length)]!;
   const others = QUIZ_CASES.filter((c) => c.id !== answer.id).sort(() => Math.random() - 0.5).slice(0, 3);
-  return { answer, options: [answer, ...others].sort(() => Math.random() - 0.5) };
+  const options: (typeof answer)[] = [answer, ...others].sort(() => Math.random() - 0.5);
+  return { answer, options };
 }
 
 export function AchievementsTab({ app }: { app: App }) {
