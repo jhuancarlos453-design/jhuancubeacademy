@@ -14,7 +14,7 @@ export function TimerTab({ app }: { app: App }) {
   const [inspectLeft, setInspectLeft] = useState(15);
   const startRef = useRef(0);
   const inspectStart = useRef(0);
-  const holdTimer = useRef<ReturnType<typeof setTimeout>>();
+  const holdTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const raf = useRef(0);
   const phaseRef = useRef<Phase>("idle");
   const wasInspecting = useRef(false);

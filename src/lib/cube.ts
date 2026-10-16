@@ -1,5 +1,5 @@
 export type Penalty = "none" | "+2" | "dnf";
-export interface Solve { id: string; ms: number; penalty: Penalty; scramble: string; date: number; cube?: string }
+export interface Solve { id: string; ms: number; penalty: Penalty; scramble: string; date: number; cube?: string | undefined }
 
 const AXES = [["U", "D"], ["R", "L"], ["F", "B"]];
 const SUFFIX = ["", "'", "2"];

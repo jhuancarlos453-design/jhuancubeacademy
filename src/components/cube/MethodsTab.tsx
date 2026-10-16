@@ -12,7 +12,7 @@ export function MethodsTab({ app }: { app: App }) {
   const method = METHODS.find((m) => m.id === methodId)!;
   const allIds = method.steps.flatMap((s) => s.cases.map((c) => c.id));
   const pct = Math.round((allIds.filter((id) => data.progress[id] === "know").length / allIds.length) * 100);
-  const step = method.steps.find((s) => s.id === stepId) ?? method.steps[0];
+  const step = (method.steps.find((s) => s.id === stepId) ?? method.steps[0])!;
 
   const mark = (id: string, v: "know" | "learning") =>
     update((d) => { const p = { ...d.progress }; if (p[id] === v) delete p[id]; else p[id] = v; return { ...d, progress: p }; });
