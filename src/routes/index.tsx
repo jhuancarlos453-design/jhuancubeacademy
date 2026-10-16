@@ -1,24 +1,81 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { BookOpen, Box, Download, LogOut, Timer, Trophy } from "lucide-react";
+import { useApp } from "@/lib/store";
+import { CubeLogo } from "@/components/cube/CubeLogo";
+import { AuthScreen } from "@/components/cube/AuthScreen";
+import { TimerTab } from "@/components/cube/TimerTab";
+import { MethodsTab } from "@/components/cube/MethodsTab";
+import { CollectionTab } from "@/components/cube/CollectionTab";
+import { AchievementsTab } from "@/components/cube/AchievementsTab";
+import { ExportTab } from "@/components/cube/ExportTab";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Jhuan Carlos Cube Academy — Timer, Métodos e Treino de Cubo Mágico" },
+      { name: "description", content: "Cronômetro com inspeção WCA, métodos Camadas e CFOP, coleção de cubos, conquistas e quiz OLL/PLL." },
+      { property: "og:title", content: "Jhuan Carlos Cube Academy" },
+      { property: "og:description", content: "Treine, aprenda e evolua no cubo mágico com timer, algoritmos e conquistas." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
+const TABS = [
+  { id: "timer", label: "Timer", icon: Timer },
+  { id: "methods", label: "Métodos", icon: BookOpen },
+  { id: "collection", label: "Coleção", icon: Box },
+  { id: "achievements", label: "Conquistas", icon: Trophy },
+  { id: "export", label: "Exportar", icon: Download },
+] as const;
+
 function Index() {
+  const app = useApp();
+  const [tab, setTab] = useState<(typeof TABS)[number]["id"]>("timer");
+
+  if (!app.ready) return <div className="min-h-screen flex items-center justify-center"><CubeLogo size={56} /></div>;
+  if (!app.user) return <AuthScreen app={app} />;
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="min-h-screen pb-24 md:pb-10">
+      <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-xl">
+        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center gap-3">
+          <CubeLogo size={34} />
+          <div className="leading-tight min-w-0">
+            <div className="font-display font-bold truncate">Jhuan Carlos <span className="text-primary">Cube Academy</span></div>
+            <div className="text-xs text-muted-foreground truncate">Olá, {app.user.name.split(" ")[0]} 👋</div>
+          </div>
+          <nav className="hidden md:flex ml-auto gap-1">
+            {TABS.map((t) => (
+              <button key={t.id} onClick={() => setTab(t.id)} className={`px-3 py-2 rounded-lg text-sm font-medium flex items-center gap-2 transition-colors ${tab === t.id ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-accent"}`}>
+                <t.icon className="size-4" /> {t.label}
+              </button>
+            ))}
+          </nav>
+          <button onClick={app.logout} aria-label="Sair" className="ml-auto md:ml-2 p-2 rounded-lg text-muted-foreground hover:text-destructive hover:bg-accent flex items-center gap-2 text-sm">
+            <LogOut className="size-4" /><span className="hidden sm:inline">Sair</span>
+          </button>
+        </div>
+      </header>
+
+      <main className="max-w-7xl mx-auto px-4 py-6 animate-in fade-in" key={tab}>
+        {tab === "timer" && <TimerTab app={app} />}
+        {tab === "methods" && <MethodsTab app={app} />}
+        {tab === "collection" && <CollectionTab app={app} />}
+        {tab === "achievements" && <AchievementsTab app={app} />}
+        {tab === "export" && <ExportTab app={app} />}
+      </main>
+
+      <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 border-t border-border bg-card/95 backdrop-blur-xl grid grid-cols-5">
+        {TABS.map((t) => (
+          <button key={t.id} onClick={() => setTab(t.id)} className={`py-2.5 flex flex-col items-center gap-1 text-[11px] ${tab === t.id ? "text-primary" : "text-muted-foreground"}`}>
+            <t.icon className="size-5" /> {t.label}
+          </button>
+        ))}
+      </nav>
     </div>
   );
 }
