@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { BookOpen, Box, Download, LogOut, Timer, Trophy } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useApp } from "@/lib/store";
 import { CubeLogo } from "@/components/cube/CubeLogo";
 import { AuthScreen } from "@/components/cube/AuthScreen";
@@ -55,12 +56,21 @@ function Index() {
               </button>
             ))}
           </nav>
-          <button onClick={app.logout} aria-label="Sair" className="ml-auto md:ml-2 p-2 rounded-lg text-muted-foreground hover:text-destructive hover:bg-accent flex items-center gap-2 text-sm">
+          <button onClick={() => { void app.logout(); }} aria-label="Sair" className="ml-auto md:ml-2 p-2 rounded-lg text-muted-foreground hover:text-destructive hover:bg-accent flex items-center gap-2 text-sm">
             <LogOut className="size-4" /><span className="hidden sm:inline">Sair</span>
           </button>
         </div>
       </header>
 
+      <div className="max-w-7xl mx-auto px-4 pt-4 space-y-3">
+        <p role="status" className="text-xs text-muted-foreground">{app.saveStatus === "saving" ? "Salvando…" : app.saveStatus === "saved" ? "Dados salvos na sua conta" : app.saveStatus === "loading" ? "Carregando dados…" : "Dados não salvos"}</p>
+        {app.error && <p role="alert" className="text-sm text-destructive">{app.error}</p>}
+        {app.legacyData && <div className="border border-border rounded-lg p-4 flex flex-wrap items-center gap-3">
+          <p className="flex-1 min-w-48 text-sm">Encontramos dados antigos deste e-mail neste navegador. Importar preserva os registros já salvos.</p>
+          <Button onClick={app.importLegacy} disabled={app.saveStatus !== "saved"}>Importar dados antigos</Button>
+          <Button variant="ghost" onClick={app.dismissLegacy}>Agora não</Button>
+        </div>}
+      </div>
       <main className="max-w-7xl mx-auto px-4 py-6 animate-in fade-in" key={tab}>
         {tab === "timer" && <TimerTab app={app} />}
         {tab === "methods" && <MethodsTab app={app} />}
