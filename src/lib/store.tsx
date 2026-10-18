@@ -5,6 +5,7 @@ import type { User as AuthUser } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { lovable } from '@/integrations/lovable';
 import { mergeTraining, parseTraining } from './training-data';
+import { googleAccountSelection } from './auth-config';
 
 export interface Cube { id: string; brand: string; model: string; category: string; magnetic: boolean; notes: string }
 export type UserData = ReturnType<typeof parseTraining>;
@@ -20,6 +21,7 @@ function useAppState() {
   const [saveStatus, setSaveStatus] = useState<'loading' | 'saved' | 'saving' | 'error'>('loading');
   const [error, setError] = useState('');
   const [legacyData, setLegacyData] = useState<UserData | null>(null);
+  const [recovery, setRecovery] = useState(false);
   const owner = useRef<string | null>(null);
   const generation = useRef(0);
   const current = useRef<UserData>(emptyData());
@@ -60,6 +62,7 @@ function useAppState() {
       await load(result.data.user);
     };
     const { data: subscription } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'PASSWORD_RECOVERY') { setRecovery(true); return; }
       if (!['SIGNED_IN', 'SIGNED_OUT', 'USER_UPDATED'].includes(event)) return;
       // Leave the auth callback before making another auth request.
       setTimeout(() => { if (active) { void sync(); void router.invalidate(); if (event !== 'SIGNED_OUT') void queryClient.invalidateQueries(); } }, 0);
@@ -104,7 +107,7 @@ function useAppState() {
     if (result.error) throw new Error(result.error.code === 'email_not_confirmed' ? 'Confirme seu e-mail antes de entrar.' : 'Não foi possível entrar. Confira seu e-mail e senha.');
   };
   const loginSocial = async (provider: 'google' | 'lovable') => {
-    const result = await lovable.auth.signInWithOAuth(provider, { redirect_uri: window.location.origin, ...(provider === 'google' ? { extraParams: { prompt: 'select_account' } } : {}) });
+    const result = await lovable.auth.signInWithOAuth(provider, { redirect_uri: window.location.origin, ...(provider === 'google' ? { extraParams: googleAccountSelection } : {}) });
     if (result.error) throw new Error('Não foi possível entrar. Tente novamente.');
   };
   const resetPassword = async (email: string) => {
@@ -120,7 +123,7 @@ function useAppState() {
     await load(null); await router.navigate({ to: '/auth', replace: true });
   };
   const importLegacy = () => { if (legacyData) { update(d => mergeTraining(d, legacyData)); setLegacyData(null); } };
-  return { ready, user, data, update, signup, login, loginGoogle: () => loginSocial('google'), loginLovable: () => loginSocial('lovable'), resetPassword, logout, saveStatus, error, legacyData, importLegacy, dismissLegacy: () => setLegacyData(null) };
+  return { ready, user, data, update, signup, login, loginGoogle: () => loginSocial('google'), loginLovable: () => loginSocial('lovable'), resetPassword, logout, saveStatus, error, legacyData, importLegacy, recovery, dismissLegacy: () => setLegacyData(null) };
 }
 export type App = ReturnType<typeof useAppState>;
 const AppContext = createContext<App | null>(null);

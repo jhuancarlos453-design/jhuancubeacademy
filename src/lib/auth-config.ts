@@ -1,0 +1,1 @@
+export const googleAccountSelection = { prompt: 'select_account' } as const;
