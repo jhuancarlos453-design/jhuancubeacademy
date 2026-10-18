@@ -6,6 +6,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { lovable } from '@/integrations/lovable';
 import { mergeTraining, parseTraining } from './training-data';
 import { googleAccountSelection } from './auth-config';
+import { awardDailyChallenge } from './daily-challenge';
 
 export interface Cube { id: string; brand: string; model: string; category: string; magnetic: boolean; notes: string }
 export type UserData = ReturnType<typeof parseTraining>;
@@ -75,7 +76,7 @@ function useAppState() {
     const id = owner.current;
     if (!id || saveStatus === 'loading' || saveStatus === 'error') return;
     let next: UserData;
-    try { next = parseTraining(fn(current.current)); } catch { setError('Alteração inválida. Seus dados não foram modificados.'); return; }
+    try { next = awardDailyChallenge(parseTraining(fn(current.current)), new Date()); } catch { setError('Alteração inválida. Seus dados não foram modificados.'); return; }
     const epoch = generation.current;
     current.current = next; setData(next); setSaveStatus('saving');
     queue.current = queue.current.then(async () => {

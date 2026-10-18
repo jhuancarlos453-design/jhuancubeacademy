@@ -14,3 +14,4 @@
 - Preserve legacy browser records and offer explicit validated, non-destructive merging only after verified Cloud sign-in with the same email.
 - Persist training payloads with revision-checked serialized writes; reject conflicts rather than silently overwriting another device's changes.
 - Validate training payloads through the shared runtime schema before imports, rendering or writes; this prevents malformed backups from corrupting the app.
+- Daily challenge rewards and per-day quiz counters live in the existing validated training payload; derive XP from unique awarded local dates and award through the serialized revision-checked update to avoid duplicate claims without another table.

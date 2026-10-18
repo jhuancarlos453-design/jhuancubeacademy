@@ -10,6 +10,7 @@ import { MethodsTab } from "@/components/cube/MethodsTab";
 import { CollectionTab } from "@/components/cube/CollectionTab";
 import { AchievementsTab } from "@/components/cube/AchievementsTab";
 import { ExportTab } from "@/components/cube/ExportTab";
+import { DailyChallenge } from '@/components/cube/DailyChallenge';
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -70,6 +71,7 @@ function Index() {
           <Button onClick={app.importLegacy} disabled={app.saveStatus !== "saved"}>Importar dados antigos</Button>
           <Button variant="ghost" onClick={app.dismissLegacy}>Agora não</Button>
         </div>}
+        <DailyChallenge app={app} onTrain={setTab} />
       </div>
       <main className="max-w-7xl mx-auto px-4 py-6 animate-in fade-in" key={tab}>
         {tab === "timer" && <TimerTab app={app} />}
