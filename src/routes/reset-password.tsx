@@ -2,6 +2,7 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
+import { useApp } from '@/lib/store';
 
 export const Route = createFileRoute('/reset-password')({
   head: () => ({ meta: [
@@ -13,6 +14,7 @@ export const Route = createFileRoute('/reset-password')({
   ] }), component: ResetPassword,
 });
 function ResetPassword() {
+  const app = useApp();
   const [recovery, setRecovery] = useState(false);
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
@@ -26,7 +28,7 @@ function ResetPassword() {
   return <main className="min-h-screen flex items-center justify-center p-4">
     <form className="surface p-6 w-full max-w-md space-y-4" onSubmit={async e => {
       e.preventDefault(); setMessage('');
-      if (!recovery || password.length < 6 || password !== confirm) { setMessage('Use ao menos 6 caracteres e confirme a mesma senha.'); return; }
+      if (!(recovery || app.recovery) || password.length < 6 || password !== confirm) { setMessage('Use ao menos 6 caracteres e confirme a mesma senha.'); return; }
       setBusy(true);
       const result = await supabase.auth.updateUser({ password });
       setBusy(false);
@@ -34,7 +36,7 @@ function ResetPassword() {
       else { setDone(true); setMessage('Senha alterada com sucesso.'); }
     }}>
       <h1 className="text-xl font-semibold">Redefinir senha</h1>
-      {done ? <Button asChild className="w-full"><Link to="/">Continuar</Link></Button> : recovery ? <>
+      {done ? <Button asChild className="w-full"><Link to="/">Continuar</Link></Button> : recovery || app.recovery ? <>
         <label className="block text-sm">Nova senha<input aria-label="Nova senha" type="password" autoComplete="new-password" minLength={6} required value={password} onChange={e => setPassword(e.target.value)} className="mt-2 w-full rounded-md bg-background border border-input px-3 py-3" /></label>
         <label className="block text-sm">Confirmar senha<input aria-label="Confirmar senha" type="password" autoComplete="new-password" minLength={6} required value={confirm} onChange={e => setConfirm(e.target.value)} className="mt-2 w-full rounded-md bg-background border border-input px-3 py-3" /></label>
         <Button disabled={busy} className="w-full">{busy ? 'Salvando…' : 'Salvar nova senha'}</Button>

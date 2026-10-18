@@ -1,6 +1,10 @@
 # Melhorias da Cube Academy
 
-- [ ] Etapa 1–2: auditar funcionalidades; substituir login simulado por acesso real; perfil privado; preservar e migrar dados locais com consentimento; recuperação de senha; testes de isolamento e persistência.
+- [x] Auditar o código existente e documentar problemas prioritários.
+- [x] Substituir conta Google fixa e senhas locais por contas reais; criar perfil privado e persistência com isolamento.
+- [x] Oferecer importação validada e não destrutiva dos dados locais do mesmo e-mail.
+- [x] Testar entrada por senha, registro de tempo, atualização da página, saída, troca de conta e isolamento no acesso aos dados.
+- [ ] Concluir verificação externa: seleção real de conta Google e recebimento/uso de e-mails de confirmação e recuperação. Bloqueio: requer interação do titular no Google e acesso à caixa de e-mail.
 - [ ] Etapa 3: timer, sessões, médias, estatísticas, edição/exclusão segura e backups validados.
 - [ ] Etapa 4: academia e treinadores com algoritmos e diagramas verificáveis.
 - [ ] Etapa 5: recomendações fundamentadas, XP, missões e conquistas testadas.
@@ -8,4 +12,4 @@
 - [ ] Etapa 7: competição de treino e comunidade com privacidade e validação.
 - [ ] Etapa 8: auditoria final, testes de fluxos e telas em diferentes tamanhos.
 
-Executar em entregas incrementais na ordem do documento; não declarar recursos futuros concluídos.
+As etapas 3–8 são próximas entregas, deliberadamente fora desta primeira etapa conforme o documento. Não declarar recursos futuros concluídos.
