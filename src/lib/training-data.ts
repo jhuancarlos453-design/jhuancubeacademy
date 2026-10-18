@@ -6,6 +6,7 @@ export const trainingSchema = z.object({
   solves: z.array(solve).default([]), progress: z.record(z.enum(['know', 'learning'])).default({}),
   cubes: z.array(cube).default([]), activeCubeId: z.string().nullable().default(null),
   inspection: z.boolean().default(false), quizBestStreak: z.number().int().nonnegative().default(0), quizCorrect: z.number().int().nonnegative().default(0),
+  dailyChallenges: z.record(z.string().regex(/^\d{4}-\d{2}-\d{2}$/), z.object({ quizCorrect: z.number().int().nonnegative().default(0), awardedAt: z.number().finite().nonnegative().nullable().default(null) })).default({}),
 }).passthrough();
 
 export function parseTraining(value: unknown) { return trainingSchema.parse(value); }

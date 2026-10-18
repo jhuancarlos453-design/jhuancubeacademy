@@ -3,6 +3,7 @@ import { computeAchievements } from "@/lib/achievements";
 import { QUIZ_CASES } from "@/lib/methods";
 import type { App } from "@/lib/store";
 import { FaceGrid } from "./CubeLogo";
+import { recordDailyQuizCorrect } from '@/lib/daily-challenge';
 
 function newQuestion() {
   const answer = QUIZ_CASES[Math.floor(Math.random() * QUIZ_CASES.length)]!;
@@ -27,7 +28,10 @@ export function AchievementsTab({ app }: { app: App }) {
     const s = ok ? streak + 1 : 0;
     setStreak(s);
     setScore((x) => ({ ok: x.ok + (ok ? 1 : 0), total: x.total + 1 }));
-    update((d) => ({ ...d, quizBestStreak: Math.max(d.quizBestStreak, s), quizCorrect: d.quizCorrect + (ok ? 1 : 0) }));
+    update((d) => {
+      const next = { ...d, quizBestStreak: Math.max(d.quizBestStreak, s), quizCorrect: d.quizCorrect + (ok ? 1 : 0) };
+      return ok ? recordDailyQuizCorrect(next, new Date()) : next;
+    });
     setTimeout(() => { setPicked(null); setQn(newQuestion()); }, 1100);
   };
 
