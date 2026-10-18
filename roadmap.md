@@ -1,5 +1,11 @@
 # Melhorias da Cube Academy
 
+## Pedido atual
+- [ ] Implementar Desafio do Dia com progresso real, 50 XP por dia, níveis e persistência na conta.
+- [ ] Testar virada de data, recarga, recompensas duplicadas e exibição em celular.
+
+## Evolução anterior (fora do escopo deste pedido)
+
 - [x] Auditar o código existente e documentar problemas prioritários.
 - [x] Substituir conta Google fixa e senhas locais por contas reais; criar perfil privado e persistência com isolamento.
 - [x] Oferecer importação validada e não destrutiva dos dados locais do mesmo e-mail.
