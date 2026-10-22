@@ -11,6 +11,7 @@ import { CollectionTab } from "@/components/cube/CollectionTab";
 import { AchievementsTab } from "@/components/cube/AchievementsTab";
 import { ExportTab } from "@/components/cube/ExportTab";
 import { DailyChallenge } from '@/components/cube/DailyChallenge';
+import { CubeMusic } from '@/components/cube/CubeMusic';
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -80,6 +81,7 @@ function Index() {
         {tab === "achievements" && <AchievementsTab app={app} />}
         {tab === "export" && <ExportTab app={app} />}
       </main>
+      <CubeMusic app={app} />
 
       <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 border-t border-border bg-card/95 backdrop-blur-xl grid grid-cols-5">
         {TABS.map((t) => (
