@@ -16,8 +16,9 @@ describe('Daily challenge rules', () => {
     expect(dailyChallenge(awardDailyChallenge(parseTraining({ solves: solves(5) }), day), day).xp).toBe(50);
   });
   it('does not count old solves or duplicate solve IDs', () => {
-    const data = parseTraining({ solves: [...solves(5, new Date(1969, 11, 31, 12)), ...Array(5).fill(solves(1)[0])] });
-    expect(dailyChallenge(awardDailyChallenge(data, day), day).xp).toBe(0);
+    const now = new Date(1970, 0, 4, 12);
+    const data = parseTraining({ solves: [...solves(5, new Date(1970, 0, 3, 12)), ...Array(5).fill(solves(1, now)[0])] });
+    expect(dailyChallenge(awardDailyChallenge(data, now), now).xp).toBe(0);
   });
   it('persists partial progress and never repeats a reward after reload or history deletion', () => {
     const partial = parseTraining(JSON.parse(JSON.stringify(parseTraining({ solves: solves(3) }))));
