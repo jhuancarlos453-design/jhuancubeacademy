@@ -3,6 +3,8 @@
 ## Pedido atual
 - [ ] Implementar Desafio do Dia com progresso real, 50 XP por dia, níveis e persistência na conta.
 - [ ] Testar virada de data, recarga, recompensas duplicadas e exibição em celular.
+- [ ] Adicionar Cube Music com player oficial Spotify, pesquisa externa e favoritos/lista pessoal na conta.
+- [ ] Verificar player e links; informar limitações de edição no Spotify.
 
 ## Evolução anterior (fora do escopo deste pedido)
 
