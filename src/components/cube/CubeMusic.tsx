@@ -19,7 +19,7 @@ export function CubeMusic({ app }: { app: App }) {
     list.splice(index, 1); list.splice(index + offset, 0, track);
     return { ...d, musicTracks: list };
   });
-  return <section aria-labelledby="cube-music-title" className="max-w-7xl mx-auto px-4 py-6 border-t border-border">
+  return <section aria-labelledby="cube-music-title" onKeyDown={e => e.stopPropagation()} onKeyUp={e => e.stopPropagation()} className="max-w-7xl mx-auto px-4 py-6 border-t border-border scroll-mt-20">
     <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
       <h2 id="cube-music-title" className="flex items-center gap-2 text-xl font-display font-semibold"><Music2 className="size-6 text-primary" />Cube Music</h2>
       <div className="flex flex-wrap gap-2">
