@@ -1,7 +1,8 @@
 # Melhorias da Cube Academy
 
 ## Pedido atual
-- [ ] Substituir somente Cube Music por playlist oficial YouTube, sem autoplay, com player fixável durante o treino; preservar dados antigos e verificar reprodução e links.
+- [x] Substituir somente Cube Music por playlist oficial YouTube sem autoplay, com player fixável durante o treino e dados antigos preservados. O link abre no destino correto; 8 testes passaram e compilação OK. Player montado e preservado entre abas, sem transbordamento no celular.
+- [ ] Confirmar reprodução da playlist no YouTube. Bloqueio: a incorporação oficial retorna “This video is unavailable” no ambiente de verificação; requer playlist/vídeos públicos com incorporação permitida pelo YouTube.
 - [x] Implementar Desafio do Dia com progresso real, 50 XP por dia, níveis e persistência na conta.
 - [x] Testar virada de data, recarga, recompensas duplicadas e exibição em celular.
 - [x] Adicionar Cube Music com player oficial Spotify, pesquisa externa e favoritos/lista pessoal na conta.
