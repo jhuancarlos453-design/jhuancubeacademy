@@ -15,4 +15,4 @@
 - Persist training payloads with revision-checked serialized writes; reject conflicts rather than silently overwriting another device's changes.
 - Validate training payloads through the shared runtime schema before imports, rendering or writes; this prevents malformed backups from corrupting the app.
 - Daily challenge rewards and per-day quiz counters live in the existing validated training payload; derive XP from unique awarded local dates and award through the serialized revision-checked update to avoid duplicate claims without another table.
-- Cube Music stays mounted outside the tab-switched training area so the player does not reset training; personal track links are validated and stored in the owner-scoped training payload, separate from Spotify playlist membership.
+- Cube Music stays mounted outside the tab-switched training area so the official playlist embed survives tab changes; retain legacy personal track validation and stored payloads without exposing the retired integration in the music UI.
