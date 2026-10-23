@@ -1,9 +1,17 @@
 import { expect, it } from 'vitest';
-import { spotifyTrackUrl, CUBE_PLAYLIST, SPOTIFY_SEARCH } from './music';
+import { spotifyTrackUrl, CUBE_PLAYLIST, SPOTIFY_SEARCH, YOUTUBE_EMBED, YOUTUBE_PLAYLIST } from './music';
 import { parseTraining } from './training-data';
 it('uses the requested Spotify playlist and official search', () => {
   expect(CUBE_PLAYLIST).toBe('https://open.spotify.com/playlist/6VAlyWe8BYs1ZG15Abxqtk');
   expect(SPOTIFY_SEARCH).toBe('https://open.spotify.com/search');
+});
+it('embeds the requested YouTube playlist without automatic playback', () => {
+  expect(YOUTUBE_PLAYLIST).toBe('https://www.youtube.com/playlist?list=PLt68EySXh-C4OfjMOKK0_U3Exsg5AbNi9');
+  const embed = new URL(YOUTUBE_EMBED);
+  expect(embed.origin + embed.pathname).toBe('https://www.youtube.com/embed/videoseries');
+  expect(embed.searchParams.get('list')).toBe('PLt68EySXh-C4OfjMOKK0_U3Exsg5AbNi9');
+  expect(embed.searchParams.get('autoplay')).toBe('0');
+  expect(embed.searchParams.get('controls')).toBe('1');
 });
 it('accepts shared Spotify track URLs and rejects unsafe or non-track links', () => {
   expect(spotifyTrackUrl('https://open.spotify.com/track/1234567890123456789012?si=abc')).toBe('https://open.spotify.com/track/1234567890123456789012');
